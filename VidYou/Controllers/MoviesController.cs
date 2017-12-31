@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using VidYou.Models;
+using VidYou.ViewModels;
 
 namespace VidYou.Controllers
 {
@@ -13,7 +14,17 @@ namespace VidYou.Controllers
         public ActionResult Random()
         {
             var movie = new Movie() { Name = "Shrek!" };
-            return View(movie);
+            var customers = new List<Customer>
+            {
+                new Customer {Name = "Customer 1"},
+                new Customer {Name = "Customer 2"}
+            };
+            var viewModel = new RandomMovieViewModel
+            {
+                Movie = movie,
+                Customers = customers
+            };
+            return View(viewModel);
             //return Content("Hello World!");
             //return HttpNotFound();
             //return new EmptyResult();
