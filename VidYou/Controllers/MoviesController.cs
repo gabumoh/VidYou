@@ -10,6 +10,31 @@ namespace VidYou.Controllers
 {
     public class MoviesController : Controller
     {
+
+        public ViewResult Index()
+        {
+            var movies = GetMovies();
+            return View(movies);
+        }
+
+        public ActionResult Details(int id)
+        {
+            var movies = GetMovies().SingleOrDefault(c => c.Id == id);
+            if (movies == null)
+                return HttpNotFound();
+
+            return View(movies);
+        }
+
+        private IEnumerable<Movie> GetMovies()
+        {
+            return new List<Movie>
+            {
+                new Movie { Id = 1, Name = "Shrek"},
+                new Movie { Id = 2, Name = "Wall-e"}
+            };
+        }
+
         // GET: Movies/Random
         public ActionResult Random()
         {
@@ -31,21 +56,7 @@ namespace VidYou.Controllers
             //return RedirectToAction("Index", "Home", new { page = 1, sortBy = "name"});
         }
 
-        public ActionResult Edit(int id)
-        {
-            return Content("id= " + id);
-        }
 
-        // movies
-        public ActionResult Index(int? pageindex, string sortBy)
-        {
-            if (!pageindex.HasValue)
-                pageindex = 1;
-            if (string.IsNullOrWhiteSpace(sortBy))
-                sortBy = "Name";
-
-            return Content(string.Format("pageIndex={0}&sortBy={1}", pageindex, sortBy));
-        }
 
         [Route("movies/released/{year}/{month:regex(\\d{2}):range(1, 12)}")]
         public ActionResult ByReleaseDate(int year, int month)
